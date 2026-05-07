@@ -50,6 +50,7 @@ export const NewTodo = ({ userList, onAdd }: NewTodoProps) => {
       <div className="field">
         <label htmlFor="title">
           <input
+            id="title"
             aria-label="title"
             type="text"
             data-cy="titleInput"
@@ -65,20 +66,25 @@ export const NewTodo = ({ userList, onAdd }: NewTodoProps) => {
       </div>
 
       <div className="field">
-        <select
-          data-cy="userSelect"
-          value={userId}
-          onChange={event => handleSelectUser(Number(event.target.value))}
-        >
-          <option value="0" disabled>
-            Choose a user
-          </option>
-          {userList.map(user => (
-            <option key={user.id} value={user.id}>
-              {user.name}
+        <label htmlFor="userId">
+          <select
+            id="userId"
+            aria-label="User Id"
+            data-cy="userSelect"
+            value={userId}
+            onChange={event => handleSelectUser(Number(event.target.value))}
+          >
+            <option value="0" disabled>
+              Choose a user
             </option>
-          ))}
-        </select>
+            {userList.map(user => (
+              <option key={user.id} value={user.id}>
+                {user.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
         {showError && userId === 0 && (
           <span className="error">Please choose a user</span>
         )}
