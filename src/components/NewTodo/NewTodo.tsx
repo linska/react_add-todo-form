@@ -10,17 +10,16 @@ export const NewTodo = ({ userList, onAdd }: NewTodoProps) => {
   const [key, setKey] = useState(0);
   const [title, setTitle] = useState('');
   const [userId, setUserId] = useState<User['id']>(0);
-  const [showError, setShowError] = useState(false);
-
-  const isFormValid = title.trim().length > 0 && userId !== 0;
+  const [titleError, setTitleError] = useState(false);
+  const [userError, setUserError] = useState(false);
 
   function handleChangeTitle(value: string) {
-    setShowError(false);
+    setTitleError(false);
     setTitle(value);
   }
 
   function handleSelectUser(value: User['id']) {
-    setShowError(false);
+    setUserError(false);
 
     if (value === userId) {
       return;
@@ -32,13 +31,21 @@ export const NewTodo = ({ userList, onAdd }: NewTodoProps) => {
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    if (!isFormValid) {
-      setShowError(true);
+    const titleCheck = !title.trim();
+    const userIdCheck = userId === 0;
 
+    if (titleCheck) {
+      setTitleError(true);
+    }
+
+    if (userIdCheck) {
+      setUserError(true);
+    }
+
+    if (titleCheck || userIdCheck) {
       return;
     }
 
-    setShowError(false);
     onAdd(title.trim(), userId);
     setTitle('');
     setUserId(0);
@@ -60,9 +67,7 @@ export const NewTodo = ({ userList, onAdd }: NewTodoProps) => {
           />
         </label>
 
-        {showError && !title.trim() && (
-          <span className="error">Please enter a title</span>
-        )}
+        {titleError && <span className="error">Please enter a title</span>}
       </div>
 
       <div className="field">
@@ -85,9 +90,7 @@ export const NewTodo = ({ userList, onAdd }: NewTodoProps) => {
           </select>
         </label>
 
-        {showError && userId === 0 && (
-          <span className="error">Please choose a user</span>
-        )}
+        {userError && <span className="error">Please choose a user</span>}
       </div>
 
       <button type="submit" data-cy="submitButton">
