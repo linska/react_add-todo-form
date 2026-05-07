@@ -8,7 +8,7 @@ import { NewTodo } from './components/NewTodo/NewTodo';
 import { useState } from 'react';
 
 const todos: TodoAggregated[] = todosFromServer.map(todo => {
-  const user = usersFromServer.find(u => u.id === todo.userId) ?? null;
+  const user = usersFromServer.find(item => item.id === todo.userId) ?? null;
 
   return {
     ...todo,
@@ -17,17 +17,17 @@ const todos: TodoAggregated[] = todosFromServer.map(todo => {
 });
 
 export const App = () => {
-  const [todoList, setTodoList] = useState<TodoAggregated[]>([...todos]);
+  const [todoList, setTodoList] = useState<TodoAggregated[]>(todos);
 
   function handleAddTodo(title: string, userId: number) {
-    const maxId = Math.max(...todoList.map(i => i.id));
+    const maxId = Math.max(...todoList.map(item => item.id));
 
     const newTodo = {
       id: maxId + 1,
       title,
       completed: false,
       userId,
-      user: usersFromServer.find(u => u.id === userId) ?? null,
+      user: usersFromServer.find(item => item.id === userId) ?? null,
     };
 
     setTodoList(prev => [...prev, newTodo]);

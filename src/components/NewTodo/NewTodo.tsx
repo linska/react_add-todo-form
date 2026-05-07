@@ -15,10 +15,13 @@ export const NewTodo = ({ userList, onAdd }: NewTodoProps) => {
   const isFormValid = title.trim().length > 0 && userId !== 0;
 
   function handleChangeTitle(value: string) {
+    setShowError(false);
     setTitle(value);
   }
 
   function handleSelectUser(value: User['id']) {
+    setShowError(false);
+
     if (value === userId) {
       return;
     }
@@ -45,13 +48,17 @@ export const NewTodo = ({ userList, onAdd }: NewTodoProps) => {
   return (
     <form action="/api/todos" method="POST" onSubmit={handleSubmit} key={key}>
       <div className="field">
-        <input
-          type="text"
-          data-cy="titleInput"
-          placeholder="Title"
-          value={title}
-          onChange={event => handleChangeTitle(event.target.value)}
-        />
+        <label htmlFor="title">
+          <input
+            aria-label="title"
+            type="text"
+            data-cy="titleInput"
+            placeholder="Title"
+            value={title}
+            onChange={event => handleChangeTitle(event.target.value)}
+          />
+        </label>
+
         {showError && !title.trim() && (
           <span className="error">Please enter a title</span>
         )}
